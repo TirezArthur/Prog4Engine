@@ -11,7 +11,7 @@ Scene::Scene(const std::string& name) : m_name(name) {}
 
 Scene::~Scene() = default;
 
-std::unique_ptr<GameObject>& Scene::Add(std::unique_ptr<GameObject> object)
+const std::unique_ptr<GameObject>& Scene::Add(std::unique_ptr<GameObject> object)
 {
 	m_objects.emplace_back(std::move(object));
 	return m_objects.back();

@@ -23,11 +23,13 @@ namespace dae
 		void Render() const;
 
 		template<typename ComponentType>
-		//requires std::derived_from<Component, ComponentType>
-		std::unique_ptr<Component>& AddComponent(std::unique_ptr<ComponentType> component);
+		requires std::derived_from<ComponentType, Component>
+		Component* AddComponent(std::unique_ptr<ComponentType> component);
+
 		template<typename ComponentType>
-		//requires std::derived_from<Component, ComponentType>
+		requires std::derived_from<ComponentType, Component>
 		ComponentType* GetComponent();
+		
 		void SetPosition(float x, float y);
 		const Transform& GetTransform() const;
 	private:
@@ -37,14 +39,16 @@ namespace dae
 	};
 
 	template<typename ComponentType>
-	std::unique_ptr<Component>& GameObject::AddComponent(std::unique_ptr<ComponentType> component)
+	requires std::derived_from<ComponentType, Component>
+	inline Component* GameObject::AddComponent(std::unique_ptr<ComponentType> component)
 	{
 		m_components.emplace_back(std::move(component));
 		m_components.back()->SetParent(this);
-		return m_components.back();
+		return m_components.back().get();
 	}
 
 	template<typename ComponentType>
+	requires std::derived_from<ComponentType, Component>
 	inline ComponentType* GameObject::GetComponent()
 	{
 		ComponentType* ret{};
