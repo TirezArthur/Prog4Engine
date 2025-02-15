@@ -4,7 +4,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <chrono>
+#include <thread>
+#include <iostream>
 #include "Engine.h"
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -66,6 +67,11 @@ dae::Engine::Engine(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	SDL_DisplayMode displayMode{};
+	SDL_GetWindowDisplayMode(g_window, &displayMode);
+
+	m_FrameTimetep = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::duration<float>(1.0f / displayMode.refresh_rate)); // Convert refresh rate to microseconds
 }
 
 dae::Engine::~Engine()
@@ -110,5 +116,8 @@ void dae::Engine::Run(const std::function<void()>& load)
 		sceneManager.Update(elapsedSec);
 
 		renderer.Render();
+
+		const auto sleepTime{ currentFrame + m_FrameTimetep };
+		std::this_thread::sleep_until(sleepTime);
 	}
 }
