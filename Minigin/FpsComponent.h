@@ -5,7 +5,7 @@
 namespace dae
 {
 	class TextComponent;
-	class FpsComponent : public Component
+	class FpsComponent final : public Component
 	{
 	public:
 		FpsComponent() = default;

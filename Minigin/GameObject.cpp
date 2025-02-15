@@ -21,6 +21,14 @@ void GameObject::Update(float elapsedSec)
 	}
 }
 
+void dae::GameObject::LateUpdate()
+{
+	for (Component* component : m_deleteQueue) {
+		DeleteComponent(component);
+	}
+	m_deleteQueue.clear();
+}
+
 void GameObject::Render() const
 {
 	for (const auto& component : m_components) {
@@ -36,4 +44,11 @@ void GameObject::SetPosition(float x, float y)
 const Transform& GameObject::GetTransform() const
 {
 	return m_transform;
+}
+
+void GameObject::DeleteComponent(Component* component)
+{
+	std::erase_if(m_components, [component](const std::unique_ptr<Component>& ownedComponent) {
+		return ownedComponent.get() == component;
+		});
 }

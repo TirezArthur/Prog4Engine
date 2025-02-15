@@ -51,3 +51,11 @@ void Scene::Render() const
 	}
 }
 
+void dae::Scene::LateUpdate()
+{
+	for (const auto& object : m_objects)
+	{
+		object->LateUpdate();
+	}
+}
+

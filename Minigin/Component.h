@@ -16,6 +16,7 @@ namespace dae
 		virtual void FixedUpdate() {};
 		virtual void Update([[maybe_unused]] float elapsedSec) {};
 		virtual void Render() const {};
+		virtual void LateUpdate() {};
 
 		virtual void SetParent(GameObject* parent) { m_parent = parent; };
 	protected:

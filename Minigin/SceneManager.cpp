@@ -32,6 +32,14 @@ void SceneManager::Render() const
 	}
 }
 
+void dae::SceneManager::LateUpdate()
+{
+	for (auto& scene : m_scenes)
+	{
+		scene->LateUpdate();
+	}
+}
+
 Scene* SceneManager::CreateScene(const std::string& name)
 {
 	m_scenes.emplace_back(new Scene{ name });

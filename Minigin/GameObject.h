@@ -20,6 +20,7 @@ namespace dae
 
 		void FixedUpdate();
 		void Update(float elapsedSec);
+		void LateUpdate();
 		void Render() const;
 
 		template<typename ComponentType>
@@ -29,13 +30,20 @@ namespace dae
 		template<typename ComponentType>
 		requires std::derived_from<ComponentType, Component>
 		ComponentType* GetComponent();
+
+		template<typename ComponentType>
+		requires std::derived_from<ComponentType, Component>
+		void RemoveComponent(ComponentType* component);
 		
 		void SetPosition(float x, float y);
 		const Transform& GetTransform() const;
 	private:
+		void DeleteComponent(Component* component);
+
 		Transform m_transform{};
 
 		std::vector<std::unique_ptr<Component>> m_components{};
+		std::vector<Component*> m_deleteQueue{};
 	};
 
 	template<typename ComponentType>
@@ -57,5 +65,12 @@ namespace dae
 			return ret != nullptr;
 			});
 		return ret;
+	}
+
+	template<typename ComponentType>
+	requires std::derived_from<ComponentType, Component>
+	inline void GameObject::RemoveComponent(ComponentType* component)
+	{
+		m_deleteQueue.emplace_back(static_cast<Component*>(component));
 	}
 }

@@ -115,6 +115,8 @@ void dae::Engine::Run(const std::function<void()>& load)
 
 		sceneManager.Update(elapsedSec);
 
+		sceneManager.LateUpdate();
+
 		renderer.Render();
 
 		const auto sleepTime{ currentFrame + m_FrameTimetep };
