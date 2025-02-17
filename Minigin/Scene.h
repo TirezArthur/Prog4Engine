@@ -8,7 +8,7 @@ namespace dae
 	{
 	public:
 		GameObject* Add(std::unique_ptr<GameObject> object);
-		void Remove(std::unique_ptr<GameObject>& object);
+		void Remove(GameObject* object);
 		void RemoveAll();
 
 		void FixedUpdate();
@@ -22,14 +22,17 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-	private: 
+	private:
 		friend Scene* SceneManager::CreateScene(const std::string& name);
 		explicit Scene(const std::string& name);
 
-		std::string m_name;
-		std::vector <std::unique_ptr<GameObject>> m_objects{};
+		void DeleteObject(GameObject* object);
 
-		static unsigned int m_idCounter; 
+		std::string m_name;
+		std::vector<std::unique_ptr<GameObject>> m_objects{};
+		std::vector<GameObject*> m_deleteQueue{};
+
+		static unsigned int m_idCounter;
 	};
 
 }

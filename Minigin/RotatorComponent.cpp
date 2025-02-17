@@ -1,11 +1,11 @@
 #define _USE_MATH_DEFINES
-#include "PeriodicMovementComponent.h"
+#include "RotatorComponent.h"
 #include "GameObject.h"
 #include <cmath>
 
 using namespace dae;
 
-PeriodicMovementComponent::PeriodicMovementComponent(GameObject* parent, float scaleX, float scaleY, float periodX, float periodY) : Component{ parent },
+RotatorComponent::RotatorComponent(GameObject* parent, float scaleX, float scaleY, float periodX, float periodY) : Component{ parent },
 m_periodX{periodX},
 m_periodY{periodY},
 m_scaleX{scaleX},
@@ -13,7 +13,7 @@ m_scaleY{scaleY}
 {
 }
 
-void PeriodicMovementComponent::Update(float elapsedSec)
+void RotatorComponent::Update(float elapsedSec)
 {
 	m_elapsedX += elapsedSec;
 	m_elapsedY += elapsedSec;

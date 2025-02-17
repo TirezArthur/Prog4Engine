@@ -41,8 +41,8 @@ void GameObject::Render() const
 
 void GameObject::SetParent(GameObject* parent, bool keepWorldTransform)
 {
-	assert(parent != this && parent != m_parent);
-	if (parent == this || parent == m_parent) return;
+	assert(parent != this && parent != m_parent || !parent);
+	if (parent == this || parent == m_parent || IsChildOfRecursive(parent)) return;
 
 	if (parent == nullptr) {
 		SetLocalPosition(GetWorldPosition());
@@ -57,6 +57,20 @@ void GameObject::SetParent(GameObject* parent, bool keepWorldTransform)
 	if (m_parent) m_parent->AddChild(this);
 }
 
+bool dae::GameObject::IsChildOfRecursive(const GameObject* object) const
+{
+	return std::ranges::any_of(m_children, [object](const GameObject* child) {
+		return child->IsChildOfRecursive(object);
+		});
+}
+
+bool dae::GameObject::IsChildOf(const GameObject* object) const
+{
+	return std::ranges::any_of(m_children, [object](const GameObject* child) {
+		return child == object;
+		});
+}
+
 void GameObject::SetLocalPosition(const glm::vec3& transform)
 {
 	m_localTransform = transform;
@@ -65,7 +79,7 @@ void GameObject::SetLocalPosition(const glm::vec3& transform)
 
 void GameObject::SetWorldPosition(const glm::vec3& transform)
 {
-	SetLocalPosition((!m_parent) ? transform :m_parent->GetWorldPosition() - transform);
+	SetLocalPosition((!m_parent) ? transform : transform - m_parent->GetWorldPosition());
 }
 
 const glm::vec3& GameObject::GetLocalPosition() const
@@ -73,7 +87,7 @@ const glm::vec3& GameObject::GetLocalPosition() const
 	return m_localTransform;
 }
 
-const glm::vec3& GameObject::GetWorldPosition()
+const glm::vec3& GameObject::GetWorldPosition() const
 {
 	if (m_positionIsDirty) {
 		m_globalTransform = (!m_parent) ? GetLocalPosition() : GetLocalPosition() + m_parent->GetWorldPosition();

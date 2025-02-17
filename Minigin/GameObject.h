@@ -37,21 +37,25 @@ namespace dae
 		void RemoveComponent(ComponentType* component);
 		
 		void SetParent(GameObject* parent, bool keepWorldTransform = false);
+		const std::vector<GameObject*>& GetChildren() const { return m_children; };
+		bool IsChildOfRecursive(const GameObject* object) const;
+		bool IsChildOf(const GameObject* object) const;
 
 		void SetLocalPosition(const glm::vec3& transform);
 		void SetWorldPosition(const glm::vec3& transform);
 		const glm::vec3& GetLocalPosition() const;
-		const glm::vec3& GetWorldPosition();
+		const glm::vec3& GetWorldPosition() const; //Conceptually const but does result in the cached global transform needing to be mutable
 	private:
 		void DeleteComponent(Component* component);
 
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);
 
-		bool m_positionIsDirty{ true };
+
+		mutable bool m_positionIsDirty{ true };
 
 		glm::vec3 m_localTransform{};
-		glm::vec3 m_globalTransform{};
+		mutable glm::vec3 m_globalTransform{};
 		GameObject* m_parent{};
 
 		std::vector<std::unique_ptr<Component>> m_components{};
@@ -73,7 +77,7 @@ namespace dae
 	inline ComponentType* GameObject::GetComponent()
 	{
 		ComponentType* ret{};
-		std::ignore = std::find_if(m_components.begin(), m_components.end(), [&ret](auto& component) {
+		std::ignore = std::ranges::find_if(m_components, [&ret](auto& component) {
 			ret = dynamic_cast<ComponentType*>(component.get());
 			return ret != nullptr;
 			});

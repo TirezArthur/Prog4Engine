@@ -180,7 +180,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="PeriodicMovementComponent.h" />
+    <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -198,7 +198,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="PeriodicMovementComponent.cpp" />
+    <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />

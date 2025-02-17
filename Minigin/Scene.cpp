@@ -17,9 +17,14 @@ GameObject* Scene::Add(std::unique_ptr<GameObject> object)
 	return m_objects.back().get();
 }
 
-void Scene::Remove(std::unique_ptr<GameObject>& object)
+void Scene::Remove(GameObject* object)
 {
-	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
+	m_deleteQueue.emplace_back(object);
+	object->SetParent(nullptr);
+	const auto& children{ object->GetChildren() };
+	for (GameObject* child : children) {
+		Remove(child);
+	}
 }
 
 void Scene::RemoveAll()
@@ -57,5 +62,16 @@ void dae::Scene::LateUpdate(float elapsedSec)
 	{
 		object->LateUpdate(elapsedSec);
 	}
+	for (GameObject* object : m_deleteQueue) 
+	{
+		DeleteObject(object);
+	}
+	m_deleteQueue.clear();
 }
 
+void dae::Scene::DeleteObject(GameObject* object)
+{
+	std::erase_if(m_objects, [object](const std::unique_ptr<GameObject>& ownedObject) {
+		return ownedObject.get() == object;
+		});
+}
