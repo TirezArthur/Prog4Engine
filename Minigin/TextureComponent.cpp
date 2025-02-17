@@ -4,7 +4,8 @@
 
 using namespace dae;
 
-TextureComponent::TextureComponent(std::shared_ptr<Texture2D> texture) : m_texture{ texture }
+TextureComponent::TextureComponent(GameObject* parent, std::shared_ptr<Texture2D> texture) : Component{parent},
+m_texture { texture }
 {
 }
 

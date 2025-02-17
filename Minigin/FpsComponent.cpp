@@ -6,6 +6,10 @@
 
 using namespace dae;
 
+dae::FpsComponent::FpsComponent(GameObject* parent) : Component{ parent }
+{
+}
+
 void FpsComponent::Update(float elapsedSec)
 {
 	if (m_textComponentTarget == nullptr) m_textComponentTarget = m_parent->GetComponent<TextComponent>();

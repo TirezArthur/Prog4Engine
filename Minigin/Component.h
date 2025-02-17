@@ -6,7 +6,6 @@ namespace dae
 	class Component
 	{
 	public:
-		Component() = default;
 		virtual ~Component() = default;
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
@@ -14,12 +13,13 @@ namespace dae
 		Component& operator=(Component&& other) = delete;
 
 		virtual void FixedUpdate() {};
-		virtual void Update([[maybe_unused]] float elapsedSec) {};
+		virtual void Update(float elapsedsec) = 0;
 		virtual void Render() const {};
 		virtual void LateUpdate() {};
 
-		virtual void SetParent(GameObject* parent) { m_parent = parent; };
 	protected:
+		explicit Component(GameObject* m_parent) : m_parent{ m_parent } {};
+
 		GameObject* m_parent{};
 	}; 
 }

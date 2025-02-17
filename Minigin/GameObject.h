@@ -20,12 +20,13 @@ namespace dae
 
 		void FixedUpdate();
 		void Update(float elapsedSec);
+		//TODO add elapsedsec
 		void LateUpdate();
 		void Render() const;
 
-		template<typename ComponentType>
-		requires std::derived_from<ComponentType, Component>
-		Component* AddComponent(std::unique_ptr<ComponentType> component);
+		template<typename ComponentType, typename... Args>
+		requires std::constructible_from<ComponentType, GameObject*, Args...>
+		Component* AddComponent(Args... args);
 
 		template<typename ComponentType>
 		requires std::derived_from<ComponentType, Component>
@@ -46,12 +47,11 @@ namespace dae
 		std::vector<Component*> m_deleteQueue{};
 	};
 
-	template<typename ComponentType>
-	requires std::derived_from<ComponentType, Component>
-	inline Component* GameObject::AddComponent(std::unique_ptr<ComponentType> component)
+	template<typename ComponentType, typename... Args>
+	requires std::constructible_from<ComponentType, GameObject*, Args...>
+	inline Component* GameObject::AddComponent(Args... args)
 	{
-		m_components.emplace_back(std::move(component));
-		m_components.back()->SetParent(this);
+		m_components.emplace_back(std::make_unique<ComponentType>(this, args...));
 		return m_components.back().get();
 	}
 

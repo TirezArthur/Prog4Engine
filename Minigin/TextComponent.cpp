@@ -8,14 +8,12 @@
 
 using namespace dae;
 
-TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font) 
-	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
+TextComponent::TextComponent(GameObject* parent, const std::string& text, std::shared_ptr<Font> font) : Component{parent},
+m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
 { }
 
-void TextComponent::Update(float elapsedSec)
+void TextComponent::Update(float /*elapsedSec*/)
 {
-	std::ignore = elapsedSec;
-
 	if (m_needsUpdate)
 	{
 		const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
