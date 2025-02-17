@@ -51,11 +51,11 @@ void Scene::Render() const
 	}
 }
 
-void dae::Scene::LateUpdate()
+void dae::Scene::LateUpdate(float elapsedSec)
 {
 	for (const auto& object : m_objects)
 	{
-		object->LateUpdate();
+		object->LateUpdate(elapsedSec);
 	}
 }
 

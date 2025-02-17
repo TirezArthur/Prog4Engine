@@ -15,7 +15,7 @@ namespace dae
 		virtual void FixedUpdate() {};
 		virtual void Update(float elapsedsec) = 0;
 		virtual void Render() const {};
-		virtual void LateUpdate() {};
+		virtual void LateUpdate(float /*elapsedSec*/) {};
 
 	protected:
 		explicit Component(GameObject* m_parent) : m_parent{ m_parent } {};

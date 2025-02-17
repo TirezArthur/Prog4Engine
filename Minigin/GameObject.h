@@ -20,8 +20,7 @@ namespace dae
 
 		void FixedUpdate();
 		void Update(float elapsedSec);
-		//TODO add elapsedsec
-		void LateUpdate();
+		void LateUpdate(float elapsedSec);
 		void Render() const;
 
 		template<typename ComponentType, typename... Args>

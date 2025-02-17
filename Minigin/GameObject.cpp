@@ -21,8 +21,11 @@ void GameObject::Update(float elapsedSec)
 	}
 }
 
-void dae::GameObject::LateUpdate()
+void dae::GameObject::LateUpdate(float elapsedSec)
 {
+	for (const auto& component : m_components) {
+		component->LateUpdate(elapsedSec);
+	}
 	for (Component* component : m_deleteQueue) {
 		DeleteComponent(component);
 	}

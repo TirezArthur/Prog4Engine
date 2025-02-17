@@ -115,7 +115,7 @@ void dae::Engine::Run(const std::function<void()>& load)
 
 		sceneManager.Update(elapsedSec);
 
-		sceneManager.LateUpdate();
+		sceneManager.LateUpdate(elapsedSec);
 
 		renderer.Render();
 

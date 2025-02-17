@@ -32,11 +32,11 @@ void SceneManager::Render() const
 	}
 }
 
-void dae::SceneManager::LateUpdate()
+void dae::SceneManager::LateUpdate(float elapsedSec)
 {
 	for (auto& scene : m_scenes)
 	{
-		scene->LateUpdate();
+		scene->LateUpdate(elapsedSec);
 	}
 }
 
