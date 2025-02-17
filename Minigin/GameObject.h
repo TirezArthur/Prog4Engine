@@ -24,7 +24,8 @@ namespace dae
 		void Render() const;
 
 		template<typename ComponentType, typename... Args>
-		requires std::constructible_from<ComponentType, GameObject*, Args...>
+		requires std::constructible_from<ComponentType, GameObject*, Args...> and
+				 std::derived_from<ComponentType, Component>
 		Component* AddComponent(Args... args);
 
 		template<typename ComponentType>
@@ -35,19 +36,32 @@ namespace dae
 		requires std::derived_from<ComponentType, Component>
 		void RemoveComponent(ComponentType* component);
 		
-		void SetPosition(float x, float y);
-		const Transform& GetTransform() const;
+		void SetParent(GameObject* parent, bool keepWorldTransform = false);
+
+		void SetLocalPosition(const glm::vec3& transform);
+		void SetWorldPosition(const glm::vec3& transform);
+		const glm::vec3& GetLocalPosition() const;
+		const glm::vec3& GetWorldPosition();
 	private:
 		void DeleteComponent(Component* component);
 
-		Transform m_transform{};
+		void AddChild(GameObject* child);
+		void RemoveChild(GameObject* child);
+
+		bool m_positionIsDirty{ true };
+
+		glm::vec3 m_localTransform{};
+		glm::vec3 m_globalTransform{};
+		GameObject* m_parent{};
 
 		std::vector<std::unique_ptr<Component>> m_components{};
+		std::vector<GameObject*> m_children{};
 		std::vector<Component*> m_deleteQueue{};
 	};
 
 	template<typename ComponentType, typename... Args>
-	requires std::constructible_from<ComponentType, GameObject*, Args...>
+	requires std::constructible_from<ComponentType, GameObject*, Args...> and
+			 std::derived_from<ComponentType, Component>
 	inline Component* GameObject::AddComponent(Args... args)
 	{
 		m_components.emplace_back(std::make_unique<ComponentType>(this, args...));
