@@ -41,15 +41,16 @@ void GameObject::Render() const
 
 void GameObject::SetParent(GameObject* parent, bool keepWorldTransform)
 {
-	assert(parent != this && parent != m_parent || !parent);
-	if (parent == this || parent == m_parent || IsChildOfRecursive(parent)) return;
+	assert(parent != this && (parent != m_parent || !parent));
+	if (parent == this || parent == m_parent || HasChildRecursive(parent)) return;
 
 	if (parent == nullptr) {
 		SetLocalPosition(GetWorldPosition());
 	}
 	else {
-		if (keepWorldTransform) SetLocalPosition(GetWorldPosition() - parent->GetWorldPosition());
-		m_positionIsDirty = true;
+		if (keepWorldTransform)
+			SetLocalPosition(GetWorldPosition() - parent->GetWorldPosition());
+		SetPositionDirty();
 	}
 
 	if (m_parent) m_parent->RemoveChild(this);
@@ -57,14 +58,14 @@ void GameObject::SetParent(GameObject* parent, bool keepWorldTransform)
 	if (m_parent) m_parent->AddChild(this);
 }
 
-bool dae::GameObject::IsChildOfRecursive(const GameObject* object) const
+bool GameObject::HasChildRecursive(const GameObject* object) const
 {
 	return std::ranges::any_of(m_children, [object](const GameObject* child) {
-		return child->IsChildOfRecursive(object);
+		return child == object || child->HasChildRecursive(object);
 		});
 }
 
-bool dae::GameObject::IsChildOf(const GameObject* object) const
+bool GameObject::HasChild(const GameObject* object) const
 {
 	return std::ranges::any_of(m_children, [object](const GameObject* child) {
 		return child == object;
@@ -74,7 +75,7 @@ bool dae::GameObject::IsChildOf(const GameObject* object) const
 void GameObject::SetLocalPosition(const glm::vec3& transform)
 {
 	m_localTransform = transform;
-	m_positionIsDirty = true;
+	SetPositionDirty();
 }
 
 void GameObject::SetWorldPosition(const glm::vec3& transform)
@@ -103,6 +104,14 @@ void GameObject::DeleteComponent(Component* component)
 		});
 }
 
+void GameObject::SetPositionDirty()
+{
+	m_positionIsDirty = true;
+	for (GameObject* child : m_children) {
+		child->SetPositionDirty();
+	}
+}
+
 void GameObject::AddChild(GameObject* child)
 {
 	m_children.emplace_back(child);
@@ -112,3 +121,5 @@ void GameObject::RemoveChild(GameObject* child)
 {
 	std::erase(m_children, child);
 }
+
+

@@ -20,7 +20,7 @@ GameObject* Scene::Add(std::unique_ptr<GameObject> object)
 void Scene::Remove(GameObject* object)
 {
 	m_deleteQueue.emplace_back(object);
-	object->SetParent(nullptr);
+	object->SetParent(nullptr); //TODO move to destructor
 	const auto& children{ object->GetChildren() };
 	for (GameObject* child : children) {
 		Remove(child);

@@ -12,7 +12,7 @@ namespace dae
 	{
 	public:
 		GameObject() = default;
-		virtual ~GameObject();
+		virtual ~GameObject(); //TODO notify parent
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
@@ -38,8 +38,8 @@ namespace dae
 		
 		void SetParent(GameObject* parent, bool keepWorldTransform = false);
 		const std::vector<GameObject*>& GetChildren() const { return m_children; };
-		bool IsChildOfRecursive(const GameObject* object) const;
-		bool IsChildOf(const GameObject* object) const;
+		bool HasChildRecursive(const GameObject* object) const; // TODO make bool argument intead of seperate function
+		bool HasChild(const GameObject* object) const;
 
 		void SetLocalPosition(const glm::vec3& transform);
 		void SetWorldPosition(const glm::vec3& transform);
@@ -51,11 +51,12 @@ namespace dae
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);
 
-
+		void SetPositionDirty();
 		mutable bool m_positionIsDirty{ true };
 
 		glm::vec3 m_localTransform{};
 		mutable glm::vec3 m_globalTransform{};
+
 		GameObject* m_parent{};
 
 		std::vector<std::unique_ptr<Component>> m_components{};
