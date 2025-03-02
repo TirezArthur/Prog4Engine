@@ -5,7 +5,10 @@
 
 using namespace dae;
 
-GameObject::~GameObject() = default;
+GameObject::~GameObject() 
+{
+	SetParent(nullptr);
+};
 
 void GameObject::FixedUpdate()
 {

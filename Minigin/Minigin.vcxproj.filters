@@ -102,6 +102,12 @@
     <ClInclude Include="..\3rdParty\ImGui\imgui_impl_opengl3_loader.h">
       <Filter>Header Files\Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="CacheTestComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\ImGui\imgui_plot.h">
+      <Filter>Header Files\Imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -168,6 +174,12 @@
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\ImGui\imgui_widgets.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="CacheTestComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\ImGui\imgui_plot.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,7 +6,7 @@
 
 using namespace dae;
 
-dae::FpsComponent::FpsComponent(GameObject* parent) : Component{ parent }
+FpsComponent::FpsComponent(GameObject* parent) : Component{ parent }
 {
 }
 

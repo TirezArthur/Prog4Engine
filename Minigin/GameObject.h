@@ -12,7 +12,7 @@ namespace dae
 	{
 	public:
 		GameObject() = default;
-		virtual ~GameObject(); //TODO notify parent
+		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
