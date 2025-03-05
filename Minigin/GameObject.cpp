@@ -7,6 +7,7 @@ using namespace dae;
 
 GameObject::~GameObject() 
 {
+	for (GameObject* child : m_children) child->SetParent(nullptr);
 	SetParent(nullptr);
 };
 
@@ -45,7 +46,7 @@ void GameObject::Render() const
 void GameObject::SetParent(GameObject* parent, bool keepWorldTransform)
 {
 	assert(parent != this && (parent != m_parent || !parent));
-	if (parent == this || parent == m_parent || HasChildRecursive(parent)) return;
+	if (parent == this || parent == m_parent || HasChild(parent, true)) return;
 
 	if (parent == nullptr) {
 		SetLocalPosition(GetWorldPosition());
@@ -61,17 +62,10 @@ void GameObject::SetParent(GameObject* parent, bool keepWorldTransform)
 	if (m_parent) m_parent->AddChild(this);
 }
 
-bool GameObject::HasChildRecursive(const GameObject* object) const
+bool GameObject::HasChild(const GameObject* object, bool recursivelyCheckChildren) const
 {
-	return std::ranges::any_of(m_children, [object](const GameObject* child) {
-		return child == object || child->HasChildRecursive(object);
-		});
-}
-
-bool GameObject::HasChild(const GameObject* object) const
-{
-	return std::ranges::any_of(m_children, [object](const GameObject* child) {
-		return child == object;
+	return std::ranges::any_of(m_children, [object, recursivelyCheckChildren](const GameObject* child) {
+		return child == object || (recursivelyCheckChildren && child->HasChild(object, recursivelyCheckChildren));
 		});
 }
 

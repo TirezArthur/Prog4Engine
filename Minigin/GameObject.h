@@ -38,8 +38,7 @@ namespace dae
 		
 		void SetParent(GameObject* parent, bool keepWorldTransform = false);
 		const std::vector<GameObject*>& GetChildren() const { return m_children; };
-		bool HasChildRecursive(const GameObject* object) const; // TODO make bool argument intead of seperate function
-		bool HasChild(const GameObject* object) const;
+		bool HasChild(const GameObject* object, bool recursivelyCheckChildren = false) const;
 
 		void SetLocalPosition(const glm::vec3& transform);
 		void SetWorldPosition(const glm::vec3& transform);
