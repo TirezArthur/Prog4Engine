@@ -4,22 +4,23 @@
 #include "Command.h"
 #include <map>
 #include <memory>
-#include <variant>
+#include <vector>
 
 namespace dae
 {
-	enum class GamepadButton : uint16_t {
-		Gamepad_UP = 0x0001,
-		Gamepad_DOWN = 0x0002,
-		Gamepad_LEFT = 0x0004,
-		Gamepad_RIGHT = 0x0008,
-		Gamepad_A = 0x1000,
-		Gamepad_B = 0x2000,
-		Gamepad_X = 0x4000,
-		Gamepad_Y = 0x8000,
+	enum class GamepadButton : uint8_t {
+		Invalid,
+		Gamepad_UP,
+		Gamepad_DOWN,
+		Gamepad_LEFT,
+		Gamepad_RIGHT,
+		Gamepad_A,
+		Gamepad_B,
+		Gamepad_X,
+		Gamepad_Y,
 	};
 
-	enum class TriggerState : uint8_t {
+	enum class TriggerType : uint8_t {
 		down,
 		up,
 		held
@@ -29,18 +30,25 @@ namespace dae
 	{
 	public:
 		bool ProcessInput();
-		void AddBinding(SDL_Scancode key, TriggerState trigger, std::unique_ptr<Command> command);
-		void AddBinding(GamepadButton key, TriggerState trigger, std::unique_ptr<Command> command, int8_t deviceId = 0);
+		void AddBinding(SDL_Scancode key, TriggerType trigger, std::unique_ptr<Command> command);
+		void AddBinding(GamepadButton key, TriggerType trigger, std::unique_ptr<Command> command, int8_t deviceId = 0);
 	private:
+		friend Singleton<InputManager>;
+		explicit InputManager();
+		~InputManager();
+
 		struct KeyMapping {
-			TriggerState trigger;
+			TriggerType trigger;
 			int8_t deviceId;
 			std::unique_ptr<Command> command;
 		};
 
-		static void ExecuteMapping(const KeyMapping& mapping, TriggerState trigger, int8_t deviceId = 0);
+		static void ExecuteMapping(const KeyMapping& mapping, TriggerType trigger, int8_t deviceId = 0);
 
 		std::multimap<GamepadButton, KeyMapping> m_GamePadMappings;
 		std::multimap<SDL_Scancode, KeyMapping> m_KeyboardMappings;
+
+		class GamePad;
+		std::vector<std::unique_ptr<GamePad>> m_Gamepads;
 	};
 }
