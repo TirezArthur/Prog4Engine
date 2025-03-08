@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <Xinput.h>
 #include <bitset>
+#include <array>
 
 using namespace dae;
 
@@ -15,6 +16,7 @@ public:
 	explicit GamePad(int8_t deviceId = 0) : m_DeviceId{ deviceId } {};
 	bool UpdateState(TriggerType& trigger, GamepadButton& button);
 	int8_t GetDeviceId() const { return m_DeviceId; }
+	std::array<bool, sizeof(WORD) * 8> GetButtonState() const;
 private:
 	GamepadButton StateToButton(WORD state) const;
 	int8_t m_DeviceId{};
@@ -42,6 +44,20 @@ bool InputManager::GamePad::UpdateState(TriggerType& trigger, GamepadButton& but
 	}
 
 	return false;
+}
+
+std::array<bool, sizeof(WORD) * 8> InputManager::GamePad::GetButtonState() const
+{
+	std::array<bool, sizeof(WORD) * 8> buttons{};
+
+	for (int buttonIndex{}; buttonIndex < sizeof(WORD) * 8; ++buttonIndex) {
+		if (m_PrevState[buttonIndex] == 1) {
+			GamepadButton button = StateToButton(0x1 << buttonIndex);
+			buttons[button] = true;
+		}
+	}
+
+	return buttons;
 }
 
 GamepadButton InputManager::GamePad::StateToButton(WORD state) const

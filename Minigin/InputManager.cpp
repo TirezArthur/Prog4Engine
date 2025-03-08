@@ -57,19 +57,51 @@ bool InputManager::ProcessInput()
 		}
 	}
 
-	//const Uint8* keys = SDL_GetKeyboardState(nullptr);
+	const Uint8* keys = SDL_GetKeyboardState(nullptr);
+	std::for_each(m_KeyboardMappings.begin(), m_KeyboardMappings.end(), [this, keys](const auto& mapping) {
+		if (keys[mapping.first] != 0) this->ExecuteMapping(mapping.second, TriggerType::held, -1);
+		});
+
+	for (auto& gamePad : m_Gamepads) {
+		const auto buttons = gamePad->GetButtonState();
+		std::for_each(m_GamePadMappings.begin(), m_GamePadMappings.end(), [this, buttons, &gamePad](const auto& mapping) {
+			if (buttons[mapping.first] != 0) this->ExecuteMapping(mapping.second, TriggerType::held, gamePad->GetDeviceId());
+			});
+	}
 
 	return true;
 }
 
-void InputManager::AddBinding(SDL_Scancode key, TriggerType trigger, std::unique_ptr<Command> command)
+Command* InputManager::AddBinding(SDL_Scancode key, TriggerType trigger, std::unique_ptr<Command> command)
 {
-	m_KeyboardMappings.emplace(std::make_pair(key, KeyMapping{ trigger, -1, std::move(command) }));
+	auto it = m_KeyboardMappings.emplace(std::make_pair(key, KeyMapping{ trigger, -1, std::move(command) }));
+	return (*it).second.command.get();
 }
 
-void InputManager::AddBinding(GamepadButton key, TriggerType trigger, std::unique_ptr<Command> command, int8_t deviceId)
+Command* InputManager::AddBinding(GamepadButton key, TriggerType trigger, std::unique_ptr<Command> command, int8_t deviceId)
 {
-	m_GamePadMappings.emplace(std::make_pair(key, KeyMapping{ trigger, deviceId, std::move(command) }));
+	auto it = m_GamePadMappings.emplace(std::make_pair(key, KeyMapping{ trigger, deviceId, std::move(command) }));
+	return (*it).second.command.get();
+}
+
+void InputManager::RemoveBindings(SDL_Scancode key)
+{
+	m_KeyboardMappings.erase(m_KeyboardMappings.lower_bound(key), m_KeyboardMappings.upper_bound(key));
+}
+
+void InputManager::RemoveBindings(GamepadButton key)
+{
+	m_GamePadMappings.erase(m_GamePadMappings.lower_bound(key), m_GamePadMappings.upper_bound(key));
+}
+
+void InputManager::RemoveBinding(Command* command)
+{
+	std::erase_if(m_KeyboardMappings, [command](const auto& mapping)-> bool {
+		return (mapping.second.command.get() == command);
+		});
+	std::erase_if(m_KeyboardMappings, [command](const auto& mapping)-> bool {
+		return (mapping.second.command.get() == command);
+		});
 }
 
 void InputManager::ExecuteMapping(const KeyMapping& mapping, TriggerType trigger, int8_t deviceId)

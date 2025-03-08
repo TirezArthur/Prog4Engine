@@ -8,7 +8,7 @@
 
 namespace dae
 {
-	enum class GamepadButton : uint8_t {
+	enum GamepadButton : uint8_t {
 		Invalid,
 		Gamepad_UP,
 		Gamepad_DOWN,
@@ -30,8 +30,11 @@ namespace dae
 	{
 	public:
 		bool ProcessInput();
-		void AddBinding(SDL_Scancode key, TriggerType trigger, std::unique_ptr<Command> command);
-		void AddBinding(GamepadButton key, TriggerType trigger, std::unique_ptr<Command> command, int8_t deviceId = 0);
+		Command* AddBinding(SDL_Scancode key, TriggerType trigger, std::unique_ptr<Command> command);
+		Command* AddBinding(GamepadButton key, TriggerType trigger, std::unique_ptr<Command> command, int8_t deviceId = 0);
+		void RemoveBindings(SDL_Scancode key);
+		void RemoveBindings(GamepadButton key);
+		void RemoveBinding(Command* command);
 	private:
 		friend Singleton<InputManager>;
 		explicit InputManager();
@@ -45,6 +48,7 @@ namespace dae
 
 		static void ExecuteMapping(const KeyMapping& mapping, TriggerType trigger, int8_t deviceId = 0);
 
+		//TODO maybe merge into one singular map using std::variant or similar. Still unsure if that's more clear or not
 		std::multimap<GamepadButton, KeyMapping> m_GamePadMappings;
 		std::multimap<SDL_Scancode, KeyMapping> m_KeyboardMappings;
 
