@@ -96,10 +96,11 @@ void InputManager::RemoveBindings(GamepadButton key)
 
 void InputManager::RemoveBinding(Command* command)
 {
-	std::erase_if(m_KeyboardMappings, [command](const auto& mapping)-> bool {
+	//TODO Fix this, I cannot currently figure out why this gives an error about the end iterator not being able to be dereferenced, as far as I can tell the implementation doesn't try to do that
+	std::erase_if(m_KeyboardMappings, [command](auto& mapping)-> bool {
 		return (mapping.second.command.get() == command);
 		});
-	std::erase_if(m_KeyboardMappings, [command](const auto& mapping)-> bool {
+	std::erase_if(m_GamePadMappings, [command](auto& mapping)-> bool {
 		return (mapping.second.command.get() == command);
 		});
 }
