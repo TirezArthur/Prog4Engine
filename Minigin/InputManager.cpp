@@ -1,5 +1,5 @@
 #include "InputManager.h"
-#include "GamePadXinput.h"
+#include "GamePad.h"
 #include <SDL.h>
 #include <imgui_impl_sdl2.h>
 #include <algorithm>

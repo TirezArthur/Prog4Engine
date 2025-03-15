@@ -3,16 +3,16 @@
 
 using namespace dae;
 
-dae::MovementComponent::~MovementComponent()
+MovementComponent::~MovementComponent()
 {
-	//dae::InputManager& inputManager = InputManager::GetInstance();
+	//InputManager& inputManager = InputManager::GetInstance();
 	//for (Command* command : m_RegisteredCommands) inputManager.RemoveBinding(command);
 }
 
-void dae::MovementComponent::Update(float elapsedSec)
+void MovementComponent::Update(float elapsedSec)
 {
-	glm::vec3 position = m_parent->GetLocalPosition();
+	glm::vec3 position = m_Parent->GetLocalPosition();
 	position.x += m_TargetDirection.x * elapsedSec * m_Velocity;
 	position.y -= m_TargetDirection.y * elapsedSec * m_Velocity;
-	m_parent->SetLocalPosition(position);
+	m_Parent->SetLocalPosition(position);
 }

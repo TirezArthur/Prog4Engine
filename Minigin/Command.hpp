@@ -6,6 +6,7 @@
 class Command 
 {
 public:
+	//TODO rule of 5
 	virtual ~Command() = default;
 	virtual void Execute() = 0;
 };

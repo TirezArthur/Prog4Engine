@@ -119,7 +119,8 @@ void dae::Engine::Run(const std::function<void()>& load)
 
 		renderer.Render();
 
-		const auto sleepTime{ currentFrame - std::chrono::high_resolution_clock::now() + m_FrameTimetep };
+		const auto currentTime{ std::chrono::high_resolution_clock::now() };
+		const auto sleepTime{ currentFrame - currentTime + m_FrameTimetep };
 		std::this_thread::sleep_for(sleepTime);
 	}
 }

@@ -8,11 +8,12 @@ using namespace dae;
 
 FpsComponent::FpsComponent(GameObject* parent) : Component{ parent }
 {
+	assert(m_Parent->GetComponent<TextComponent>() != nullptr);
 }
 
 void FpsComponent::Update(float elapsedSec)
 {
-	if (m_textComponentTarget == nullptr) m_textComponentTarget = m_parent->GetComponent<TextComponent>();
+	if (m_textComponentTarget == nullptr) m_textComponentTarget = m_Parent->GetComponent<TextComponent>();
 
 	m_elapsedValues.push_back(elapsedSec);
 	if (m_elapsedValues.size() > MAXLISTSIZE) m_elapsedValues.pop_front();

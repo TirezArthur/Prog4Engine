@@ -13,7 +13,7 @@ void TextureComponent::Render() const
 {
 	if (m_texture != nullptr)
 	{
-		auto& pos = m_parent->GetWorldPosition();
+		auto& pos = m_Parent->GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 	}
 }

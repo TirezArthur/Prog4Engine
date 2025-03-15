@@ -18,8 +18,8 @@ namespace dae
 		virtual void LateUpdate(float /*elapsedSec*/) {};
 
 	protected:
-		explicit Component(GameObject* m_parent) : m_parent{ m_parent } {};
+		explicit Component(GameObject* m_parent) : m_Parent{ m_parent } {};
 
-		GameObject* m_parent{};
+		GameObject* m_Parent{};
 	}; 
 }

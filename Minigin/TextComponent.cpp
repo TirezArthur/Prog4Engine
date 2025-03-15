@@ -37,7 +37,7 @@ void TextComponent::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
-		auto& pos = m_parent->GetWorldPosition();
+		auto& pos = m_Parent->GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }

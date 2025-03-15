@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
-#include "SDL_keycode.h"
-#include "Command.h"
+#include "Command.hpp"
+#include <SDL_keycode.h>
 #include <map>
 #include <memory>
 #include <vector>
@@ -14,6 +14,12 @@ namespace dae
 		Gamepad_DOWN,
 		Gamepad_LEFT,
 		Gamepad_RIGHT,
+		Gamepad_Start,
+		Gamepad_Back,
+		Gamepad_Left_Thumb,
+		Gamepad_Right_Thumb,
+		Gamepad_Left_Shoulder,
+		Gamepad_Right_Shoulder,
 		Gamepad_A,
 		Gamepad_B,
 		Gamepad_X,
@@ -26,9 +32,15 @@ namespace dae
 		held
 	};
 
+	class GamePad;
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
+		InputManager(const InputManager& other) = delete;
+		InputManager(InputManager&& other) = delete;
+		InputManager& operator=(const InputManager& other) = delete;
+		InputManager& operator=(InputManager&& other) = delete;
+
 		bool ProcessInput();
 		Command* AddBinding(SDL_Scancode key, TriggerType trigger, std::unique_ptr<Command> command);
 		Command* AddBinding(GamepadButton key, TriggerType trigger, std::unique_ptr<Command> command, int8_t deviceId = 0);
@@ -52,7 +64,7 @@ namespace dae
 		std::multimap<GamepadButton, KeyMapping> m_GamePadMappings;
 		std::multimap<SDL_Scancode, KeyMapping> m_KeyboardMappings;
 
-		class GamePad;
+		//TODO fix pimpl
 		std::vector<std::unique_ptr<GamePad>> m_Gamepads;
 	};
 }
