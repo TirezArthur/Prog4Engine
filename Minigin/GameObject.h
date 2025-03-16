@@ -26,7 +26,7 @@ namespace dae
 		template<typename ComponentType, typename... Args>
 		requires std::constructible_from<ComponentType, GameObject*, Args...> and
 				 std::derived_from<ComponentType, Component>
-		Component* AddComponent(Args... args);
+		ComponentType* AddComponent(Args... args);
 
 		template<typename ComponentType>
 		requires std::derived_from<ComponentType, Component>
@@ -66,10 +66,10 @@ namespace dae
 	template<typename ComponentType, typename... Args>
 	requires std::constructible_from<ComponentType, GameObject*, Args...> and
 			 std::derived_from<ComponentType, Component>
-	inline Component* GameObject::AddComponent(Args... args)
+	inline ComponentType* GameObject::AddComponent(Args... args)
 	{
 		m_components.emplace_back(std::make_unique<ComponentType>(this, args...));
-		return m_components.back().get();
+		return reinterpret_cast<ComponentType*>(m_components.back().get());
 	}
 
 	template<typename ComponentType>

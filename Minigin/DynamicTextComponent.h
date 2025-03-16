@@ -25,7 +25,7 @@ namespace dae
 		{
 			if (event == m_EventId)
 			{
-				int data = event.GetData<int>();
+				int data = event.GetData<EventValueType>();
 				m_TextComponentTarget->SetText(std::vformat(m_FormatString, std::make_format_args(data)));
 			}
 		}
