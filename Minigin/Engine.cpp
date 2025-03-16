@@ -1,3 +1,8 @@
+#include "Engine.h"
+#include "InputManager.h"
+#include "SceneManager.h"
+#include "Renderer.h"
+#include "ResourceManager.h"
 #include <stdexcept>
 #define WIN32_LEAN_AND_MEAN 
 #include <windows.h>
@@ -5,12 +10,8 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <thread>
+#include <steam_api.h>
 #include <iostream>
-#include "Engine.h"
-#include "InputManager.h"
-#include "SceneManager.h"
-#include "Renderer.h"
-#include "ResourceManager.h"
 
 SDL_Window* g_window{};
 
@@ -64,6 +65,11 @@ dae::Engine::Engine(const std::string &dataPath)
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
+	if (SteamAPI_Init()) {
+		std::cout << "Successfully initialized steam." << std::endl;
+	}
+	else throw std::runtime_error(std::string("Fatal Error - Steam must be running to play this game (SteamAPI_Init() failed)."));
+
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
@@ -77,6 +83,7 @@ dae::Engine::Engine(const std::string &dataPath)
 dae::Engine::~Engine()
 {
 	Renderer::GetInstance().Destroy();
+	SteamAPI_Shutdown();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();
@@ -118,6 +125,8 @@ void dae::Engine::Run(const std::function<void()>& load)
 		sceneManager.LateUpdate(elapsedSec);
 
 		renderer.Render();
+
+		SteamAPI_RunCallbacks();
 
 		const auto currentTime{ std::chrono::high_resolution_clock::now() };
 		const auto sleepTime{ currentFrame - currentTime + m_FrameTimetep };
