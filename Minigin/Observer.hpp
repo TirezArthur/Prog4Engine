@@ -26,6 +26,7 @@ namespace dae
 		}
 		template<typename DataType>
 		DataType GetData() const {
+			//TODO fix this
 			//assert(m_Data.has_value() && m_Data::type == typeid(DataType));
 			return std::any_cast<DataType>(m_Data);
 		}

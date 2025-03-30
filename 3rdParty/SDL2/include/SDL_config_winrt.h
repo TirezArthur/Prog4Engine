@@ -104,7 +104,7 @@
 #define HAVE__STRICMP 1
 #define HAVE__STRNICMP 1
 #define HAVE_VSNPRINTF 1
-/* TODO, WinRT: consider using ??_s versions of the following */
+/* 0TODO, WinRT: consider using ??_s versions of the following */
 /* #undef HAVE__STRLWR */
 /* #undef HAVE_ITOA */
 /* #undef HAVE__LTOA */

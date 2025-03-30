@@ -40,6 +40,7 @@ private:
 	ValueType m_Modifier;
 };
 
+//TODO bad, should be generic
 class DamageCommand : public Command
 {
 public:

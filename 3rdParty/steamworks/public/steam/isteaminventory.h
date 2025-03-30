@@ -243,7 +243,7 @@ public:
 	// will return an empty result set if there is not enough playtime credit for a drop.
 	// Your game should call TriggerItemDrop at an appropriate time for the user to receive
 	// new items, such as between rounds or while the player is dead. Note that players who
-	// hack their clients could modify the value of "dropListDefinition", so do not use it
+	// 0hack their clients could modify the value of "dropListDefinition", so do not use it
 	// to directly control rarity.
 	// See your Steamworks configuration to set playtime drop rates for individual itemdefs.
 	// The client library will suppress too-frequent calls to this method.

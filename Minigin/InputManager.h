@@ -64,7 +64,6 @@ namespace dae
 		std::multimap<GamepadButton, KeyMapping> m_GamePadMappings;
 		std::multimap<SDL_Scancode, KeyMapping> m_KeyboardMappings;
 
-		//TODO fix pimpl
 		std::vector<std::unique_ptr<GamePad>> m_Gamepads;
 	};
 }

@@ -29,6 +29,7 @@ namespace dae
 				m_Completed = true;
 				SteamUserStats()->SetAchievement(m_Id.data());
 				SteamUserStats()->StoreStats();
+				//TODO maybe unbind from subject after completion
 			}
 		}
 	private:
