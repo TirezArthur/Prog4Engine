@@ -137,7 +137,7 @@
     <ClInclude Include="Hash.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Observer.hpp">
+    <ClInclude Include="ObserverSubject.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">

@@ -120,7 +120,7 @@
     <ClInclude Include="Hash.hpp" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="Observer.hpp" />
+    <ClInclude Include="ObserverSubject.hpp" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />

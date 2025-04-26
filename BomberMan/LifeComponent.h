@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "Observer.hpp"
+#include "ObserverSubject.hpp"
 #include <algorithm>
 #include <memory>
 

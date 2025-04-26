@@ -30,10 +30,10 @@ namespace dae
 			return std::any_cast<DataType>(m_Data);
 		}
 
-		constexpr bool operator==(const std::string_view eventName) const {
-			return m_EventId == sdbm_hash(eventName);
+		consteval bool operator==(const std::string_view eventName) const {
+			return operator==(sdbm_hash(eventName));
 		}
-		bool operator==(const uint32_t id) const {
+		constexpr bool operator==(const uint32_t id) const {
 			return m_EventId == id;
 		}
 		bool operator==(const Event& other) const {
