@@ -9,9 +9,10 @@ SoundManager& ServiceLocator::GetSoundManagerInstance()
 	return *m_SoundManagerInstance;
 }
 
-void ServiceLocator::RegisterSoundManagerInstance(std::unique_ptr<SoundManager>&& soundManager)
+SoundManager& ServiceLocator::RegisterSoundManagerInstance(std::unique_ptr<SoundManager>&& soundManager)
 {
 	m_SoundManagerInstance = std::move(soundManager);
+	return GetSoundManagerInstance();
 }
 
 //const InputManager& ServiceLocator::GetInputManagerInstance()

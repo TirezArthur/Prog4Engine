@@ -74,7 +74,7 @@ namespace dae
 
 	template<typename ComponentType>
 	requires std::derived_from<ComponentType, Component>
-	inline ComponentType* GameObject::GetComponent()
+	ComponentType* GameObject::GetComponent()
 	{
 		ComponentType* ret{};
 		std::ignore = std::ranges::find_if(m_components, [&ret](auto& component) {
@@ -86,7 +86,7 @@ namespace dae
 
 	template<typename ComponentType>
 	requires std::derived_from<ComponentType, Component>
-	inline void GameObject::RemoveComponent(ComponentType* component)
+	void GameObject::RemoveComponent(ComponentType* component)
 	{
 		m_deleteQueue.emplace_back(static_cast<Component*>(component));
 	}

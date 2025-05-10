@@ -19,7 +19,7 @@ namespace dae
 		ServiceLocator& operator=(ServiceLocator&& other) = delete;
 
 		static SoundManager& GetSoundManagerInstance();
-		static void RegisterSoundManagerInstance(std::unique_ptr<SoundManager>&& soundManager);
+		static SoundManager& RegisterSoundManagerInstance(std::unique_ptr<SoundManager>&& soundManager);
 
 		//static const InputManager& GetInputManagerInstance();
 		//static void RegisterInputManagerInstance(std::unique_ptr<InputManager>&& inputManager);

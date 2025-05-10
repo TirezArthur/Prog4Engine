@@ -7,7 +7,7 @@ namespace dae
 	class SdlSoundManager final : public SoundManager
 	{
 	public:
-		SdlSoundManager();
+		explicit SdlSoundManager(std::string_view filePath);
 		virtual ~SdlSoundManager() override;
 
 		SdlSoundManager(const SdlSoundManager& other) = delete;
