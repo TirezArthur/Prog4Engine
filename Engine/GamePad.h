@@ -1,6 +1,5 @@
 #pragma once
 #include "InputManager.h"
-#include <bitset>
 #include <array>
 
 #define MAX_GAMEPADS 4
